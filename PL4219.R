@@ -79,3 +79,26 @@ ggplot(data = nrc_word_counts, mapping = aes(x = line, y = n)) +
   xlab("document (line)") +
   ylab("sentiment (conditional mean)") +
   ggtitle("Intertemporal Use of Sentiments (Conditional Mean)")
+
+# Intertemporal Use of Sentiments (Score)
+
+# load bing lexicon
+bing_word_counts <- bind_rows(
+  text_tidy %>%
+    inner_join(get_sentiments("bing")) %>%
+    mutate(method = "Bing et al."))
+
+
+sentiment_sum <- ifelse(bing_word_counts$sentiment == "positive", 1, -1)
+sentiment_sum_df <- cbind(bing_word_counts$line, sentiment_sum)
+colnames(sentiment_sum_df) <- c('var1', 'var2')
+sentiment_sum_df <- as.data.frame(sentiment_sum_df)
+sentiment_sum_df <- aggregate(sentiment_sum_df$var2,
+                              by=list(line=sentiment_sum_df$var1), FUN=sum)
+
+# plot graph
+ggplot(data = sentiment_sum_df, mapping = aes(x = line, y = x)) +
+  geom_smooth(method="loess", formula="y~x", span=0.2) +
+  xlab("document (line)") +
+  ylab("sentiment (score)") +
+  ggtitle("Intertemporal Use of Sentiments (Score)")
