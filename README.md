@@ -2,7 +2,7 @@
 
 PL4219 Advanced Abnormal Psychology
 
-AY21/22 Semester 2, Dr Gwee Kenji
+AY22/23 Semester 2, Dr Gwee Kenji
 
 # Explanation
 
